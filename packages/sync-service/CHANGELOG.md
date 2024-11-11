@@ -1,5 +1,12 @@
 # @core/sync-service
 
+## 0.8.2
+
+### Patch Changes
+
+- 90ead4f: Support for managing multiple databases on one Electric (multi tenancy).
+- 5e60e71: Refactored the tenant manager to store tenant information in an ETS table for improved read performance.
+
 ## 0.8.1
 
 ### Patch Changes

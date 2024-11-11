@@ -1,5 +1,11 @@
 # @electric-sql/client
 
+## 0.7.2
+
+### Patch Changes
+
+- 90ead4f: Support for managing multiple databases on one Electric (multi tenancy).
+
 ## 0.7.1
 
 ### Patch Changes
