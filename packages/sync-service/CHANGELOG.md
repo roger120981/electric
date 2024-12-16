@@ -1,5 +1,12 @@
 # @core/sync-service
 
+## 1.0.0-beta.2
+
+### Patch Changes
+
+- 218b7d4: fix: truncates no longer cause a stop to an incoming replication stream
+- 7caccbf: Return `202` for `waiting` and `starting` health status - accepts requests but will fail to service them.
+
 ## 1.0.0-beta.1
 
 ### Patch Changes
