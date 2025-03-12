@@ -1,5 +1,15 @@
 # @core/sync-service
 
+## 1.0.0-beta.24
+
+### Patch Changes
+
+- ccafe48: fix: Fix file corruption when concatenating files during compaction
+- eb8167a: Implement `ELECTRIC_QUERY_DATABASE_URL` optional env var to perform queries with separate, potentially pooled connection string.
+- 46a0d4e: fix: fixes file merging during compaction, which was very suboptimal due to a bug
+- ac9af08: Add configuration flag to disable HTTP cache headers
+- 78fdc21: Fix: Setting ELECTRIC_STORAGE_DIR wasn't changing where Electric was storing shape logs and its persistent state due to a bug.
+
 ## 1.0.0-beta.23
 
 ### Patch Changes
