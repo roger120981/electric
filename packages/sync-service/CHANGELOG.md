@@ -1,5 +1,15 @@
 # @core/sync-service
 
+## 1.1.15
+
+### Patch Changes
+
+- 1585136: Validate connection options for lock breaker connection.
+- bec7bfd: Stop reporting disk usage in StackTelemetry, it's too expensive for a regular measurement.
+- 6fa0258: Simplify connection status error handling for runtime failures
+- 519b936: Parse more DB errors as retryable (`ssl connect: closed` and `connection_refused` with PG code 08006).
+- 4f7aef1: Ensure the lock breaker connection is not linked to the connection manager to avoid unnecessary crashes.
+
 ## 1.1.14
 
 ### Patch Changes
