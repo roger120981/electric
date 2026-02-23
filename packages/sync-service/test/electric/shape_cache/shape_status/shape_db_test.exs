@@ -130,7 +130,7 @@ defmodule Electric.ShapeCache.ShapeStatus.ShapeDbTest do
     {:ok, _hash1} = ShapeDb.add_shape(ctx.stack_id, shape1, handle1)
     assert {:ok, 1} = ShapeDb.count_shapes(ctx.stack_id)
 
-    assert {:error, "No shape matching \"no-such-handle\""} =
+    assert {:error, {:enoshape, "no-such-handle"}} =
              ShapeDb.remove_shape(ctx.stack_id, "no-such-handle")
 
     assert {:ok, 1} = ShapeDb.count_shapes(ctx.stack_id)
@@ -440,6 +440,36 @@ defmodule Electric.ShapeCache.ShapeStatus.ShapeDbTest do
       ShapeDb.WriteBuffer.flush_sync(ctx.stack_id)
 
       assert 0 = ShapeDb.WriteBuffer.pending_count_diff(ctx.stack_id)
+    end
+
+    test "duplicate removal operations do not block the write queue", ctx do
+      shape = Shape.new!("items", inspector: @stub_inspector)
+      handle = "handle-0"
+
+      {:ok, _hash} = ShapeDb.add_shape(ctx.stack_id, shape, handle)
+
+      assert 1 = ShapeDb.WriteBuffer.pending_count_diff(ctx.stack_id)
+
+      ShapeDb.WriteBuffer.flush_sync(ctx.stack_id)
+      assert 0 = ShapeDb.WriteBuffer.pending_count_diff(ctx.stack_id)
+      assert :ok = ShapeDb.remove_shape(ctx.stack_id, handle)
+
+      ShapeDb.WriteBuffer.flush_sync(ctx.stack_id)
+      assert 0 = ShapeDb.WriteBuffer.pending_count_diff(ctx.stack_id)
+
+      ShapeDb.WriteBuffer.remove_shape(ctx.stack_id, handle)
+      assert -1 = ShapeDb.WriteBuffer.pending_count_diff(ctx.stack_id)
+
+      ShapeDb.WriteBuffer.flush_sync(ctx.stack_id)
+      assert 0 = ShapeDb.WriteBuffer.pending_count_diff(ctx.stack_id)
+    end
+
+    test "failing to mark a snapshot completed does not block the write queue", ctx do
+      handle = "handle-0"
+      ShapeDb.WriteBuffer.queue_snapshot_complete(ctx.stack_id, handle)
+      assert 1 = ShapeDb.WriteBuffer.pending_operations_count(ctx.stack_id)
+      ShapeDb.WriteBuffer.flush_sync(ctx.stack_id)
+      assert 0 = ShapeDb.WriteBuffer.pending_operations_count(ctx.stack_id)
     end
   end
 
