@@ -1,5 +1,11 @@
 # @core/sync-service
 
+## 1.4.11
+
+### Patch Changes
+
+- 9ca341c: Improve 503 error response when concurrent request limit is exceeded. Change error code from generic `"overloaded"` to `"concurrent_request_limit_exceeded"` and include the request kind and configured limit in the message.
+
 ## 1.4.10
 
 ### Patch Changes
